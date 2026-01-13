@@ -1,313 +1,235 @@
 # EPL Predictions Tool
 
-A comprehensive web application for predicting English Premier League (EPL) match outcomes using machine learning and statistical analysis.
+A comprehensive tool for predicting English Premier League (EPL) match outcomes using machine learning and statistical analysis.
 
 ## Table of Contents
 
-- [Features](#features)
-- [Project Structure](#project-structure)
+- [Project Overview](#project-overview)
 - [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Setup Instructions](#setup-instructions)
-- [Running the Application](#running-the-application)
-- [Configuration](#configuration)
+- [Backend Setup](#backend-setup)
+  - [Installation](#backend-installation)
+  - [Configuration](#backend-configuration)
+  - [Running the Backend](#running-the-backend)
+- [Frontend Setup](#frontend-setup)
+  - [Installation](#frontend-installation)
+  - [Configuration](#frontend-configuration)
+  - [Running the Frontend](#running-the-frontend)
+- [Project Structure](#project-structure)
 - [API Documentation](#api-documentation)
 - [Contributing](#contributing)
 - [License](#license)
 
-## Features
+---
 
-### Core Predictions
-- **Machine Learning Models**: Leverages multiple ML algorithms to predict match outcomes
-- **Statistical Analysis**: Analyzes historical EPL data for pattern recognition
-- **Real-time Updates**: Updates predictions as new match data becomes available
-- **Confidence Scoring**: Provides confidence metrics for each prediction
+## Project Overview
 
-### User Interface
-- **Interactive Dashboard**: Browse predictions across all EPL fixtures
-- **Match Details**: View in-depth analysis for individual matches
-- **Historical Data**: Access past predictions and actual results
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
+The EPL Predictions Tool is designed to:
+- Analyze historical EPL match data
+- Generate predictions for upcoming matches
+- Provide detailed statistics and insights
+- Visualize predictions and team performance metrics
+- Deliver results through both a REST API and web interface
 
-### Data Management
-- **Automated Data Sync**: Regularly updates with latest EPL data
-- **Team Statistics**: Tracks team performance metrics
-- **Player Analysis**: Individual player performance insights
-- **Trend Analysis**: Identifies team form and momentum
+---
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+### General Requirements
+- **Git**: For version control ([Download](https://git-scm.com/))
+- **Python 3.8+**: Required for the backend
+- **Node.js 14+**: Required for the frontend
+- **npm or yarn**: Package managers for Node.js
+
+### Verify Installations
+```bash
+python --version
+node --version
+npm --version
+```
+
+---
+
+## Backend Setup
+
+### Backend Installation
+
+1. **Clone the Repository** (if not already done)
+   ```bash
+   git clone https://github.com/Mano31-a/epl-predictions-tool.git
+   cd epl-predictions-tool
+   ```
+
+2. **Navigate to Backend Directory**
+   ```bash
+   cd backend
+   ```
+
+3. **Create a Virtual Environment**
+   ```bash
+   # On Windows
+   python -m venv venv
+   venv\Scripts\activate
+
+   # On macOS/Linux
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+4. **Install Dependencies**
+   ```bash
+   pip install --upgrade pip
+   pip install -r requirements.txt
+   ```
+
+### Backend Configuration
+
+1. **Environment Variables**
+   Create a `.env` file in the `backend` directory:
+   ```bash
+   cp .env.example .env
+   ```
+
+   Edit the `.env` file with your configuration:
+   ```
+   FLASK_ENV=development
+   FLASK_DEBUG=True
+   SECRET_KEY=your_secret_key_here
+   DATABASE_URL=sqlite:///predictions.db
+   API_PORT=5000
+   LOG_LEVEL=INFO
+   ```
+
+2. **Database Setup** (if applicable)
+   ```bash
+   python manage.py db init
+   python manage.py db migrate
+   python manage.py db upgrade
+   ```
+
+### Running the Backend
+
+1. **Activate Virtual Environment** (if not already activated)
+   ```bash
+   # On Windows
+   venv\Scripts\activate
+
+   # On macOS/Linux
+   source venv/bin/activate
+   ```
+
+2. **Start the Backend Server**
+   ```bash
+   python app.py
+   ```
+   or
+   ```bash
+   flask run
+   ```
+
+3. **Verify Backend is Running**
+   - Open your browser and navigate to: `http://localhost:5000`
+   - You should see the API running or a confirmation message
+
+4. **Access API Documentation** (if Swagger/OpenAPI is configured)
+   - Navigate to: `http://localhost:5000/api/docs`
+
+---
+
+## Frontend Setup
+
+### Frontend Installation
+
+1. **Navigate to Frontend Directory**
+   ```bash
+   cd frontend
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+   or if using yarn:
+   ```bash
+   yarn install
+   ```
+
+### Frontend Configuration
+
+1. **Environment Variables**
+   Create a `.env` file in the `frontend` directory:
+   ```bash
+   cp .env.example .env
+   ```
+
+   Edit the `.env` file with your configuration:
+   ```
+   REACT_APP_API_URL=http://localhost:5000/api
+   REACT_APP_API_TIMEOUT=30000
+   NODE_ENV=development
+   ```
+
+2. **Update API Base URL** (if using a different backend address)
+   - Edit `src/config/api.js` or relevant configuration file
+   - Update the `API_BASE_URL` to match your backend URL
+
+### Running the Frontend
+
+1. **Start the Development Server**
+   ```bash
+   npm start
+   ```
+   or with yarn:
+   ```bash
+   yarn start
+   ```
+
+2. **Access the Application**
+   - The application will automatically open in your browser
+   - If not, navigate to: `http://localhost:3000`
+
+3. **Build for Production** (when ready to deploy)
+   ```bash
+   npm run build
+   ```
+   or
+   ```bash
+   yarn build
+   ```
+
+---
 
 ## Project Structure
 
 ```
 epl-predictions-tool/
 ├── backend/
-│   ├── app.py                 # Flask application entry point
-│   ├── config.py              # Configuration settings
+│   ├── app.py                 # Main Flask application
 │   ├── requirements.txt        # Python dependencies
-│   ├── models/
-│   │   ├── prediction_model.py # ML prediction logic
-│   │   └── data_processor.py   # Data processing utilities
-│   ├── routes/
-│   │   ├── predictions.py      # Prediction API endpoints
-│   │   ├── matches.py          # Match data endpoints
-│   │   └── teams.py            # Team data endpoints
-│   ├── utils/
-│   │   ├── database.py         # Database utilities
-│   │   ├── api_client.py       # External API integration
-│   │   └── helpers.py          # Helper functions
-│   └── database/
-│       └── models.py           # Database models
-│
+│   ├── .env.example            # Example environment variables
+│   ├── config/                 # Configuration files
+│   ├── models/                 # Machine learning models
+│   ├── routes/                 # API routes/endpoints
+│   ├── utils/                  # Utility functions
+│   └── data/                   # Data storage and processing
 ├── frontend/
-│   ├── public/
-│   │   ├── index.html          # Main HTML file
-│   │   └── favicon.ico         # App icon
 │   ├── src/
+│   │   ├── components/         # React components
+│   │   ├── pages/              # Page components
+│   │   ├── services/           # API service calls
 │   │   ├── App.js              # Main App component
-│   │   ├── index.js            # React entry point
-│   │   ├── components/
-│   │   │   ├── Dashboard.js     # Main dashboard
-│   │   │   ├── MatchCard.js     # Individual match card
-│   │   │   ├── PredictionDetails.js
-│   │   │   └── Navbar.js        # Navigation bar
-│   │   ├── pages/
-│   │   │   ├── Home.js
-│   │   │   ├── Predictions.js
-│   │   │   └── Statistics.js
-│   │   ├── services/
-│   │   │   └── api.js          # API communication
-│   │   ├── styles/
-│   │   │   └── App.css         # Global styles
-│   │   └── utils/
-│   │       └── helpers.js      # Utility functions
-│   ├── package.json            # Node dependencies
-│   └── .env.example            # Environment variables template
-│
-├── docker/
-│   ├── Dockerfile.backend
-│   ├── Dockerfile.frontend
-│   └── docker-compose.yml      # Multi-container setup
-│
-├── .gitignore
+│   │   └── index.js            # React entry point
+│   ├── public/                 # Static assets
+│   ├── package.json            # Node.js dependencies
+│   ├── .env.example            # Example environment variables
+│   └── package-lock.json       # Dependency lock file
 ├── README.md                   # This file
-└── LICENSE
+├── .gitignore                  # Git ignore rules
+└── LICENSE                     # License file
 ```
 
-## Prerequisites
-
-### Required Software
-- **Python 3.8+** - For backend development
-- **Node.js 14+** and **npm 6+** - For frontend development
-- **PostgreSQL 12+** or **SQLite** - Database
-- **Git** - Version control
-
-### Recommended Tools
-- **Docker** and **Docker Compose** - For containerized deployment
-- **Virtual Environment** (venv or conda) - Python environment isolation
-- **VS Code** or **PyCharm** - Code editor/IDE
-
-## Installation
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/Mano31-a/epl-predictions-tool.git
-cd epl-predictions-tool
-```
-
-### 2. Backend Setup
-
-#### Create and Activate Virtual Environment
-
-```bash
-# On macOS/Linux
-python3 -m venv venv
-source venv/bin/activate
-
-# On Windows
-python -m venv venv
-venv\Scripts\activate
-```
-
-#### Install Python Dependencies
-
-```bash
-cd backend
-pip install -r requirements.txt
-```
-
-### 3. Frontend Setup
-
-#### Install Node Dependencies
-
-```bash
-cd ../frontend
-npm install
-```
-
-#### Configure Environment Variables
-
-```bash
-# Copy the example environment file
-cp .env.example .env
-
-# Edit .env with your configuration
-# REACT_APP_API_URL=http://localhost:5000
-# REACT_APP_API_TIMEOUT=5000
-```
-
-## Setup Instructions
-
-### Backend Configuration
-
-1. **Create `.env` file in the backend directory:**
-
-```bash
-cd backend
-touch .env
-```
-
-2. **Add the following environment variables:**
-
-```env
-# Flask Configuration
-FLASK_APP=app.py
-FLASK_ENV=development
-SECRET_KEY=your-secret-key-here
-
-# Database Configuration
-DATABASE_URL=sqlite:///epl_predictions.db
-# or for PostgreSQL
-# DATABASE_URL=postgresql://username:password@localhost:5432/epl_predictions
-
-# API Configuration
-EXTERNAL_API_KEY=your-api-key
-EXTERNAL_API_URL=https://api.example.com
-
-# Prediction Settings
-MODEL_PATH=./models/trained_model.pkl
-CONFIDENCE_THRESHOLD=0.65
-
-# Server Configuration
-PORT=5000
-DEBUG=True
-```
-
-3. **Initialize the Database:**
-
-```bash
-python
->>> from app import db
->>> db.create_all()
->>> exit()
-```
-
-### Frontend Configuration
-
-The frontend configuration is managed through environment variables in the `.env` file (copied from `.env.example`).
-
-Key variables:
-- `REACT_APP_API_URL` - Backend API base URL
-- `REACT_APP_API_TIMEOUT` - API request timeout in milliseconds
-
-## Running the Application
-
-### Option 1: Local Development (Recommended for Development)
-
-#### Terminal 1 - Start Backend Server
-
-```bash
-cd backend
-source venv/bin/activate  # or venv\Scripts\activate on Windows
-python app.py
-```
-
-The backend will start on `http://localhost:5000`
-
-#### Terminal 2 - Start Frontend Development Server
-
-```bash
-cd frontend
-npm start
-```
-
-The frontend will start on `http://localhost:3000` and open automatically in your browser.
-
-### Option 2: Docker Deployment (Recommended for Production)
-
-#### Build and Run with Docker Compose
-
-```bash
-# Build images
-docker-compose build
-
-# Start containers
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop containers
-docker-compose down
-```
-
-The application will be available at:
-- Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:5000`
-
-#### Individual Docker Commands
-
-```bash
-# Build backend image
-docker build -f docker/Dockerfile.backend -t epl-backend .
-
-# Run backend container
-docker run -p 5000:5000 --env-file backend/.env epl-backend
-
-# Build frontend image
-docker build -f docker/Dockerfile.frontend -t epl-frontend .
-
-# Run frontend container
-docker run -p 3000:3000 epl-frontend
-```
-
-### Running Tests
-
-#### Backend Tests
-
-```bash
-cd backend
-pytest -v
-pytest --cov=.  # Generate coverage report
-```
-
-#### Frontend Tests
-
-```bash
-cd frontend
-npm test
-npm run build  # Build for production
-```
-
-## Configuration
-
-### Backend Configuration Options
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `FLASK_ENV` | development | Environment mode (development/production) |
-| `SECRET_KEY` | None | Flask secret key for sessions |
-| `DATABASE_URL` | sqlite:///epl.db | Database connection string |
-| `DEBUG` | False | Enable/disable debug mode |
-| `PORT` | 5000 | Server port |
-| `EXTERNAL_API_KEY` | None | API key for external data sources |
-
-### Frontend Configuration Options
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `REACT_APP_API_URL` | http://localhost:5000 | Backend API base URL |
-| `REACT_APP_API_TIMEOUT` | 5000 | Request timeout in ms |
-| `REACT_APP_DEBUG` | false | Enable/disable debug logging |
+---
 
 ## API Documentation
 
@@ -316,124 +238,159 @@ npm run build  # Build for production
 http://localhost:5000/api
 ```
 
-### Endpoints
+### Available Endpoints
 
-#### Get All Predictions
-```
-GET /api/predictions
-```
+#### Predictions
+- `GET /predictions` - Get all predictions
+- `GET /predictions/<id>` - Get a specific prediction
+- `POST /predictions` - Create a new prediction
+- `PUT /predictions/<id>` - Update a prediction
+- `DELETE /predictions/<id>` - Delete a prediction
 
-#### Get Prediction by ID
-```
-GET /api/predictions/{id}
-```
+#### Teams
+- `GET /teams` - Get all teams
+- `GET /teams/<id>` - Get team details
+- `GET /teams/<id>/stats` - Get team statistics
 
-#### Get Matches
-```
-GET /api/matches?date=2026-01-13&team=Arsenal
-```
+#### Matches
+- `GET /matches` - Get all matches
+- `GET /matches/<id>` - Get match details
+- `GET /matches/upcoming` - Get upcoming matches
 
-#### Get Team Statistics
-```
-GET /api/teams/{team_name}/stats
-```
+#### Statistics
+- `GET /stats/league` - Get league statistics
+- `GET /stats/team/<team_id>` - Get team statistics
 
-For detailed API documentation, see [API.md](./API.md) or access the interactive Swagger documentation at `http://localhost:5000/api/docs`.
+For detailed API documentation, refer to the backend's API docs endpoint once the server is running.
 
-## Development Workflow
-
-### Creating a Feature Branch
-
-```bash
-git checkout -b feature/your-feature-name
-```
-
-### Making Changes
-
-1. Make your changes
-2. Test your changes locally
-3. Commit with descriptive messages
-
-```bash
-git add .
-git commit -m "feat: add new prediction algorithm"
-```
-
-### Submitting a Pull Request
-
-```bash
-git push origin feature/your-feature-name
-```
-
-Then create a pull request on GitHub.
+---
 
 ## Troubleshooting
 
 ### Backend Issues
 
-**ModuleNotFoundError: No module named 'flask'**
-- Solution: Ensure virtual environment is activated and dependencies are installed
-  ```bash
-  source venv/bin/activate
-  pip install -r requirements.txt
-  ```
-
-**Database Connection Error**
-- Solution: Check `DATABASE_URL` in `.env` and ensure database is running
-
 **Port Already in Use**
-- Solution: Change port in `.env` or kill the process using the port
-  ```bash
-  # macOS/Linux
-  lsof -i :5000 | grep LISTEN | awk '{print $2}' | xargs kill -9
-  ```
+```bash
+# Find and kill the process using port 5000
+# On Windows
+netstat -ano | findstr :5000
+taskkill /PID <PID> /F
+
+# On macOS/Linux
+lsof -i :5000
+kill -9 <PID>
+```
+
+**Module Import Errors**
+```bash
+# Ensure virtual environment is activated and run
+pip install -r requirements.txt
+```
 
 ### Frontend Issues
 
-**npm ERR! Cannot find module**
-- Solution: Clear node_modules and reinstall
-  ```bash
-  rm -rf node_modules package-lock.json
-  npm install
-  ```
+**Port Already in Use**
+```bash
+# Specify a different port
+PORT=3001 npm start
+```
 
-**CORS Errors**
-- Solution: Ensure backend `.env` has correct `CORS_ORIGINS`
-  ```env
-  CORS_ORIGINS=http://localhost:3000
-  ```
+**Dependencies Installation Failed**
+```bash
+# Clear cache and reinstall
+rm -rf node_modules package-lock.json
+npm install
+```
 
-## Performance Optimization
-
-- **Caching**: Implement Redis for caching frequently accessed data
-- **Database Indexing**: Optimize database queries with proper indexes
-- **Frontend Lazy Loading**: Implement code splitting for React components
-- **API Rate Limiting**: Implement rate limiting to protect the backend
-
-## Security Considerations
-
-- Never commit `.env` files to version control
-- Use strong, unique secret keys in production
-- Implement HTTPS in production
-- Sanitize user inputs on both frontend and backend
-- Keep dependencies updated: `npm audit` and `pip audit`
-
-## Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+**Cannot Connect to Backend**
+- Ensure backend is running on the configured port
+- Check the `REACT_APP_API_URL` environment variable
+- Verify firewall settings allow the connection
 
 ---
 
-**Last Updated**: January 13, 2026
+## Development Workflow
 
-For issues, questions, or suggestions, please open an [issue](https://github.com/Mano31-a/epl-predictions-tool/issues) on GitHub.
+### Making Changes
+
+1. **Create a Feature Branch**
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+2. **Make Your Changes**
+   - Backend: Modify files in the `backend/` directory
+   - Frontend: Modify files in the `frontend/` directory
+
+3. **Test Your Changes**
+   - Run the application and test functionality
+   - Ensure no errors in browser console or terminal
+
+4. **Commit and Push**
+   ```bash
+   git add .
+   git commit -m "Description of your changes"
+   git push origin feature/your-feature-name
+   ```
+
+5. **Create a Pull Request**
+   - Go to GitHub and create a pull request
+   - Provide a clear description of your changes
+
+---
+
+## Running Both Services Simultaneously
+
+For development, you may want to run both services in parallel:
+
+### Option 1: Two Terminal Windows
+**Terminal 1 - Backend:**
+```bash
+cd backend
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+python app.py
+```
+
+**Terminal 2 - Frontend:**
+```bash
+cd frontend
+npm start
+```
+
+### Option 2: Using Concurrently (from project root)
+If you have `concurrently` installed:
+```bash
+npm install -g concurrently
+concurrently "cd backend && python app.py" "cd frontend && npm start"
+```
+
+---
+
+## Contributing
+
+We welcome contributions! Please follow these guidelines:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Write or update tests as needed
+5. Ensure code follows project style guidelines
+6. Submit a pull request with a clear description
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+## Support
+
+For issues, questions, or suggestions:
+- Open an issue on GitHub
+- Contact the development team
+
+---
+
+**Last Updated:** January 13, 2026
